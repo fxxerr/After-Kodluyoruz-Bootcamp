@@ -9,7 +9,7 @@ export const todoSlice = createSlice({
       const newTodo = {
         id: v4(),
         title: action.payload,
-        complete: false,
+        completed: false,
       };
       state.todos.push(newTodo);
     },
@@ -18,8 +18,8 @@ export const todoSlice = createSlice({
       state.todos.splice(action.payload.id, 1);
     },
     todoCompleted: (state, action) => {
-      state.todos[action.payload.id].completed =
-        !state.todos[action.payload.id].completed;
+      state.todos[action.payload].completed =
+        !state.todos[action.payload].completed;
     },
   },
 });

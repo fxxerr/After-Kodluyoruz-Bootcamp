@@ -1,12 +1,10 @@
-import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { addTodo } from "../store/features/todo/TodoSlice";
-import { useState } from "react";
 
 function TodoComponent() {
   const [todo, setTodo] = useState("");
   const dispatch = useDispatch();
-  const todos = useSelector((state) => state.todoReducer.value);
 
   return (
     <div>
