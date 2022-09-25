@@ -1,5 +1,6 @@
 import { skipToken } from "@reduxjs/toolkit/dist/query";
 import {
+  MDBBtn,
   MDBCard,
   MDBCardBody,
   MDBCardImage,
@@ -10,9 +11,12 @@ import {
   MDBTypography,
 } from "mdb-react-ui-kit";
 import React from "react";
+import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-
+import AddShoppingCartOutlinedIcon from "@mui/icons-material/AddShoppingCartOutlined";
 import { useFetchProductQuery } from "../store/productApi";
+import { addToBasket } from "../store/basketSlice";
+import { toast } from "react-toastify";
 
 function Detail() {
   const { id } = useParams();
@@ -21,7 +25,8 @@ function Detail() {
     error,
     isError,
   } = useFetchProductQuery(id ? id : skipToken);
-  console.log(product);
+  const dispatch = useDispatch();
+
   return (
     <>
       <MDBRow>
@@ -44,6 +49,15 @@ function Detail() {
                 <br />
                 <h6>Stock Left:{product?.stock}</h6>
               </MDBCardText>
+              <MDBBtn className="mt-1" tag="a" color="none">
+                <AddShoppingCartOutlinedIcon
+                  style={{ color: "black" }}
+                  onClick={() => {
+                    dispatch(addToBasket(product));
+                    toast.success("Added to Cart");
+                  }}
+                />
+              </MDBBtn>
             </MDBCardBody>
           </MDBCard>
         </MDBCol>
