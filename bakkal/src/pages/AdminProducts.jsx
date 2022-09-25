@@ -151,9 +151,7 @@ const AdminProducts = () => {
             />
 
             <div className="col-12">
-              <MDBBtn style={{ width: "100%" }}>
-                {id ? "Update" : "Submit"}
-              </MDBBtn>
+              <MDBBtn style={{ width: "100%" }}>Submit</MDBBtn>
             </div>
           </MDBValidation>
         </MDBCardBody>

@@ -23,6 +23,8 @@ import {
 } from "../store/productApi";
 import { async } from "@firebase/util";
 import EditProduct from "./EditProduct";
+import DeleteIcon from "@mui/icons-material/Delete";
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
 
 const ListProducts = () => {
   const { data, isLoading } = useFetchProductsQuery();
@@ -79,21 +81,15 @@ const ListProducts = () => {
                   <Link to={`/detail/${product.id}`}>Details</Link>
                 </MDBCardText>
                 <MDBBtn className="mt-1" tag="a" color="none">
-                  <MDBIcon
-                    far
-                    icon="edit"
-                    style={{ color: "#dd4b39" }}
+                  <ModeEditIcon
+                    color="action"
                     onClick={() => handleShow(product)}
-                    size="lg"
                   />
                 </MDBBtn>
                 <MDBBtn className="mt-1" tag="a" color="none">
-                  <MDBIcon
-                    fas
-                    icon="trash"
-                    style={{ color: "#dd4b39" }}
+                  <DeleteIcon
+                    color="action"
                     onClick={() => handleDelete(product.id)}
-                    size="lg"
                   />
                 </MDBBtn>
               </MDBCardBody>
@@ -103,7 +99,7 @@ const ListProducts = () => {
       </MDBRow>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Add Employee</Modal.Title>
+          <Modal.Title>Edit Product</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <EditProduct product={product} />
