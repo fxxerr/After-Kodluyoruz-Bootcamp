@@ -1,55 +1,70 @@
-import "./chart.scss";
+import { MDBCol, MDBContainer, MDBRow } from "mdb-react-ui-kit";
+import React, { useState, useEffect } from "react";
+import Spinner from "../components/Spinner";
+import { useFetchOrdersQuery } from "../store/productApi";
+
 import {
   AreaChart,
   Area,
   XAxis,
+  YAxis,
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
 
-const data = [
-  { name: "January", Total: 1200 },
-  { name: "February", Total: 2100 },
-  { name: "March", Total: 800 },
-  { name: "April", Total: 1600 },
-  { name: "May", Total: 900 },
-  { name: "June", Total: 1700 },
-];
+function AdminDashboard() {
+  const { data, isLoading } = useFetchOrdersQuery();
+  const [orders, setOrders] = useState([]);
 
-const AdminDashboard = ({ aspect, title }) => {
+  if (isLoading) {
+    return <Spinner />;
+  } else {
+    data.forEach((order) => {
+      orders.push({
+        date: new Date(order.timestamp).toLocaleDateString("tr-TR"),
+        total: order.total,
+      });
+    });
+  }
+
+  console.log("orders", orders);
+
   return (
-    <div className="chart">
-      <div className="title">{title}</div>
-      <div style={{ width: "500px", height: "500px" }}>
-        <ResponsiveContainer width="100%" aspect={aspect}>
-          <AreaChart
-            width={730}
-            height={250}
-            data={data}
-            margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
-          >
-            <defs>
-              <linearGradient id="total" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="50%" stopColor="#8884d8" stopOpacity={0.8} />
-                <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
-              </linearGradient>
-            </defs>
-            <XAxis dataKey="name" stroke="gray" />
-            <CartesianGrid strokeDasharray="3 3" className="chartGrid" />
-            <Tooltip />
-            <Area
-              type="monotone"
-              dataKey="Total"
-              stroke="#8884d8"
-              fillOpacity={1}
-              fill="url(#total)"
-            />
-          </AreaChart>
-        </ResponsiveContainer>
-      </div>
-    </div>
+    <MDBContainer className="m-5">
+      <MDBRow>
+        <MDBCol>
+          <div style={{ width: "500px", height: "500px" }}>
+            <h6>Total Sales Over Time</h6>
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart
+                width={500}
+                height={400}
+                data={[...orders]}
+                margin={{
+                  top: 10,
+                  right: 30,
+                  left: 0,
+                  bottom: 0,
+                }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="date" />
+                <YAxis />
+                <Tooltip />
+                <Area
+                  type="monotone"
+                  dataKey="total"
+                  stroke="#8884d8"
+                  fill="#8884d8"
+                />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
+        </MDBCol>
+      </MDBRow>
+    </MDBContainer>
   );
-};
+}
 
 export default AdminDashboard;
